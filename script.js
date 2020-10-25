@@ -5,12 +5,14 @@ const time = document.querySelector('.time'),
   focus = document.querySelector('.focus'),
   curDate = document.querySelector('.curDate');
 let bufferName = "",
-  bufferFocus = "";
+  bufferFocus = "",
+  imgBtn = false;
 
 const base = './assets/images/';
 const images = ['01.jpg', '02.jpg', '03.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg', '19.jpg', '20.jpg'];
 const btn = document.querySelector('.btn');
-let i = Math.floor(Math.random() * 20);
+let i = Math.floor(Math.random() * 20),
+  timeOfDay = 0;
 
 // Options
 const showAmPm = false;
@@ -170,12 +172,46 @@ function getImage() {
   }
   setBgGreet(imageSrc);
   i++;
-  btn.disabled = true;
-  setTimeout(function() { btn.disabled = false }, 1000);
   setTimeout(getImage, 3600000);
 } 
 
-btn.addEventListener('click', getImage);
+function getImageBtn() {
+  const index = i % images.length,
+    timesOfDay = ['night/', 'morning/', 'day/', 'evening/'];
+  let imageSrc = base;
+  let today = new Date(),
+    hour = today.getHours();
+  
+  if (imgBtn === false) {
+    imgBtn = true;
+    if (hour < 6) {
+      timeOfDay = 0;
+    } else if (hour < 12) {
+      // Morning
+      timeOfDay = 1;
+    } else if (hour < 18) {
+      // Afternoon
+      timeOfDay = 2;
+    } else {
+      // Evening
+      timeOfDay = 3;
+    }
+  }
+  
+  imageSrc = imageSrc + timesOfDay[timeOfDay] + images[index];
+  setBgGreet(imageSrc);
+
+  i++;
+  if (i === 20) {
+    timeOfDay++;
+    timeOfDay = timeOfDay % 4;
+  }
+  
+  btn.disabled = true;
+  setTimeout(function() { btn.disabled = false }, 1000);
+}
+
+btn.addEventListener('click', getImageBtn);
 
 
 name.addEventListener('keypress', setName);
