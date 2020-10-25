@@ -4,7 +4,8 @@ const time = document.querySelector('.time'),
   name = document.querySelector('.name'),
   focus = document.querySelector('.focus'),
   curDate = document.querySelector('.curDate');
-  let bufferName = "";
+let bufferName = "",
+  bufferFocus = "";
 
 const base = './assets/images/';
 const images = ['01.jpg', '02.jpg', '03.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg', '19.jpg', '20.jpg'];
@@ -120,16 +121,33 @@ function getFocus() {
   }
 }
 
+(function () {
+  focus.addEventListener('click', (e) => {
+      bufferFocus = e.target.textContent;
+      e.target.textContent = "";
+  });
+}())
+
 // Set Focus
 function setFocus(e) {
   if (e.type === 'keypress') {
-    // Make sure enter is pressed
+  // Make sure enter is pressed
     if (e.which == 13 || e.keyCode == 13) {
-      localStorage.setItem('focus', e.target.innerText);
-      focus.blur();
-    }
+      if (e.target.innerText === "") {
+        localStorage.setItem('focus', bufferFocus);
+        getFocus();
+      } else {
+        localStorage.setItem('focus', e.target.innerText);
+      }
+        focus.blur();
+      }
   } else {
-    localStorage.setItem('focus', e.target.innerText);
+    if (e.target.innerText === "") {
+      localStorage.setItem('focus', bufferFocus);
+      getFocus();
+    } else {
+      localStorage.setItem('focus', e.target.innerText);
+    }
   }
 }
 
