@@ -4,7 +4,13 @@ const time = document.querySelector('.time'),
   name = document.querySelector('.name'),
   focus = document.querySelector('.focus'),
   curDate = document.querySelector('.curDate');
-let bufferName = "";
+  let bufferName = "";
+
+const base = './assets/images/';
+const images = ['01.jpg', '02.jpg', '03.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg', '19.jpg', '20.jpg'];
+const btn = document.querySelector('.btn');
+let i = Math.floor(Math.random() * 20);
+console.log(i);
 
 // Options
 const showAmPm = false;
@@ -44,29 +50,24 @@ function addZero(n) {
 }
 
 // Set Background and Greeting
-function setBgGreet() {
+function setBgGreet(folder) {
     let today = new Date(),
         hour = today.getHours();
-
     if (hour < 6) {
-        document.body.style.backgroundImage =
-        "url('./assets/images/night/01.jpg')";
+        document.body.style.backgroundImage = `url(${folder})`;
         greeting.textContent = 'Доброй ночи, ';
         document.body.style.color = 'white';
     } else if (hour < 12) {
         // Morning
-        document.body.style.backgroundImage =
-        "url('./assets/images/morning/01.jpg')";
+        document.body.style.backgroundImage = `url(${folder})`;
         greeting.textContent = 'Доброе утро, ';
     } else if (hour < 18) {
         // Afternoon
-        document.body.style.backgroundImage =
-        "url('./assets/images/day/01.jpg')";
+        document.body.style.backgroundImage = `url(${folder})`;
         greeting.textContent = 'Добрый день, ';
     } else {
         // Evening
-        document.body.style.backgroundImage =
-        "url('./assets/images/evening/01.jpg')";
+        document.body.style.backgroundImage = `url(${folder})`;
         greeting.textContent = 'Добрый вечер, ';
         document.body.style.color = 'white';
     }
@@ -75,7 +76,7 @@ function setBgGreet() {
 // Get Name
 function getName() {
   if (localStorage.getItem('name') === null) {
-    name.textContent = '[Enter Name]';
+    name.textContent = '[Введи имя]';
   } else {
     name.textContent = localStorage.getItem('name');
   }
@@ -114,7 +115,7 @@ function setName(e) {
 // Get Focus
 function getFocus() {
   if (localStorage.getItem('focus') === null) {
-    focus.textContent = '[Enter Focus]';
+    focus.textContent = '[Введи планы]';
   } else {
     focus.textContent = localStorage.getItem('focus');
   }
@@ -133,6 +134,32 @@ function setFocus(e) {
   }
 }
 
+function getImage() {
+  const index = i % images.length;
+  let imageSrc = base; 
+  let today = new Date(),
+    hour = today.getHours();
+  if (hour < 6) {
+      imageSrc = imageSrc + 'night/' + images[index];
+  } else if (hour < 12) {
+      // Morning
+      imageSrc = imageSrc + 'morning/' + images[index];
+  } else if (hour < 18) {
+      // Afternoon
+      imageSrc = imageSrc + 'day/' + images[index];
+  } else {
+      // Evening
+      imageSrc = imageSrc + 'evening/' + images[index];
+  }
+  setBgGreet(imageSrc);
+  i++;
+  btn.disabled = true;
+  setTimeout(function() { btn.disabled = false }, 1000);
+} 
+
+btn.addEventListener('click', getImage);
+
+
 name.addEventListener('keypress', setName);
 name.addEventListener('blur', setName);
 focus.addEventListener('keypress', setFocus);
@@ -140,6 +167,6 @@ focus.addEventListener('blur', setFocus);
 
 // Run
 showTime();
-setBgGreet();
+getImage();
 getName();
 getFocus();
