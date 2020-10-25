@@ -10,7 +10,6 @@ const base = './assets/images/';
 const images = ['01.jpg', '02.jpg', '03.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg', '16.jpg', '17.jpg', '18.jpg', '19.jpg', '20.jpg'];
 const btn = document.querySelector('.btn');
 let i = Math.floor(Math.random() * 20);
-console.log(i);
 
 // Options
 const showAmPm = false;
@@ -155,6 +154,7 @@ function getImage() {
   i++;
   btn.disabled = true;
   setTimeout(function() { btn.disabled = false }, 1000);
+  setTimeout(getImage, 3600000);
 } 
 
 btn.addEventListener('click', getImage);
