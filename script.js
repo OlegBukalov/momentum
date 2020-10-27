@@ -17,6 +17,12 @@ let i = Math.floor(Math.random() * 20),
 const blockquote = document.querySelector('blockquote');
 const figcaption = document.querySelector('figcaption');
 
+const weatherIcon = document.querySelector('.weather-icon');
+const temperature = document.querySelector('.temperature');
+const weatherDescription = document.querySelector('.weather-description');
+const city = document.querySelector('.city');
+let bufferCity = "";
+
 // Options
 const showAmPm = false;
 
@@ -168,7 +174,6 @@ async function getQuote() {
 
   blockquote.textContent = quote;
   figcaption.textContent = "Народное творчество";
-  console.log('123');
 }
 // document.addEventListener('DOMContentLoaded', getQuote);
 
@@ -233,15 +238,75 @@ function getImageBtn() {
   setTimeout(function() { btn.disabled = false }, 1000);
 }
 
-btn.addEventListener('click', getImageBtn);
+// Get City
+function getCity() {
+  if (localStorage.getItem('city') === null) {
+    city.textContent = 'Минск';
+  } else {
+    city.textContent = localStorage.getItem('city');
+  }
+}
 
+(function () {
+  city.addEventListener('click', (e) => {
+        bufferCity = e.target.textContent;
+        e.target.textContent = "";
+    });
+}())
+
+function setCity(e) {
+  if (e.type === 'keypress') {
+    // Make sure enter is pressed
+    if (e.which == 13 || e.keyCode == 13) {
+        if (e.target.innerText === "") {
+            localStorage.setItem('city', bufferCity);
+            getCity();
+        } else {
+            localStorage.setItem('city', e.target.innerText);
+        }
+        city.blur();
+        getWeather();
+    }
+  } else {
+    if (e.target.innerText === "") {
+        localStorage.setItem('city', bufferCity);
+        getCity();
+    } else {
+        localStorage.setItem('city', e.target.innerText);
+    }
+    // getWeather();
+  }
+}
+
+async function getWeather() {  
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.textContent}&lang=ru&appid=08f2a575dda978b9c539199e54df03b0&units=metric`;
+  const res = await fetch(url);
+  if (res.ok) {
+    const data = await res.json(); 
+    weatherIcon.className = 'weather-icon owf';
+    weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+    temperature.textContent = `${data.main.temp}°C, ${data.main.humidity}%, ${data.wind.speed}м/с`;
+    weatherDescription.textContent = data.weather[0].description;
+  } else {
+    alert("Что-то пошло не так! Проверьте название города или попробуйте позже")
+  }
+  console.log('hgf');
+}
+
+document.addEventListener('DOMContentLoaded', getWeather);
+city.addEventListener('keypress', setCity);
+city.addEventListener('blur', setCity);
+
+btn.addEventListener('click', getImageBtn);
 
 name.addEventListener('keypress', setName);
 name.addEventListener('blur', setName);
 focus.addEventListener('keypress', setFocus);
 focus.addEventListener('blur', setFocus);
 
+
 // Run
+getCity();
 showTime();
 getImage();
 getName();

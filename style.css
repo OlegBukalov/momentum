@@ -9,7 +9,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     text-align: center;
     height: 100vh;
     background-size: cover;
@@ -25,7 +24,8 @@
     background-size: contain;
     background-repeat: no-repeat;
     filter: grayscale(1);
-    margin-top: 50px;
+    position: fixed;
+    bottom: 20px;
   }
   .btn:hover {
     filter: grayscale(.8);
@@ -38,6 +38,11 @@
     transform: scale(1.02)
   }
   
+  .weather {
+    width: 100%;
+    padding: 15px;
+  }
+
   .curDate {
       font-size: 4rem;
   }
@@ -56,11 +61,13 @@
   }
 
   .quote {
+    max-width: 1000px;
     font: 1.2rem Georgia, serif;
-    margin: 0;
+    margin: 0 1em;
     background: #eee;
     padding: 1em;
     border-radius: 1em;
+    background-color: cadetblue;
   }
   .quote figcaption,
   .quote blockquote {
@@ -70,8 +77,14 @@
     text-align: right;
   }
   
-  @media (max-width: 700px) {
+  @media screen and (max-width: 767px) {
+    h1 {
+      margin-bottom: 10px;
+    }
+    .curDate {
+      font-size: 20px;
+    }
     .time {
-      font-size: 6rem;
+      font-size: 4rem;
     }
   }
