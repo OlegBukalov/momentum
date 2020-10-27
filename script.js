@@ -14,6 +14,9 @@ const btn = document.querySelector('.btn');
 let i = Math.floor(Math.random() * 20),
   timeOfDay = 0;
 
+const blockquote = document.querySelector('blockquote');
+const figcaption = document.querySelector('figcaption');
+
 // Options
 const showAmPm = false;
 
@@ -153,6 +156,22 @@ function setFocus(e) {
   }
 }
 
+async function getQuote() {  
+  const quotes = [
+    "— Александр Григорьевич, а зачем НАТО хочет захватить Беларусь, ведь тут же нет ни нефти, ни газа? — А картоха?!",
+    "Лукашенко попал в книгу Гиннеса за наибольшее число гостей, пришедших на день рождения.",
+    "Пришел Лукашенко к гадалке, спрашивает: — Что меня ждет? — У меня для вас два предсказания: хорошее и плохое. — Какое плохое? — спрашивает Лукашенко. — На новых президентских выборах вас не выберут. — А хорошее? — Вы об этом не узнаете.",
+    "Идет мужик по улице с работы, трезвый, никого не трогает. Рядом тормозит автозак, вылетают омоновцы и начинают паковать его в машину, лупят дубинками. Мужик кричит: — Отпустите, я за Лукашенко голосовал! — Не п*зди, за Лукашенко никто не голосовал!",
+    "— Александр Григорьевич, поздравляю Вас с победой на выборах, желаю дальнейшей плодотворной работы! — Володя, ну хоть ты не подкалывай!"
+  ]
+  let quote = quotes[Math.floor(Math.random()*quotes.length)];
+
+  blockquote.textContent = quote;
+  figcaption.textContent = "Народное творчество";
+  console.log('123');
+}
+// document.addEventListener('DOMContentLoaded', getQuote);
+
 function getImage() {
   const index = i % images.length;
   let imageSrc = base; 
@@ -172,6 +191,7 @@ function getImage() {
   }
   setBgGreet(imageSrc);
   i++;
+  getQuote();
   setTimeout(getImage, 3600000);
 } 
 
@@ -206,7 +226,9 @@ function getImageBtn() {
     timeOfDay++;
     timeOfDay = timeOfDay % 4;
   }
-  
+
+  getQuote();
+    
   btn.disabled = true;
   setTimeout(function() { btn.disabled = false }, 1000);
 }

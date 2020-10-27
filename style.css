@@ -16,7 +16,7 @@
     color: #000000;
     transition: background-image 1s ease-in-out;
   }
-
+  
   .btn {
     width: 60px;
     height: 60px;
@@ -53,6 +53,21 @@
   h2 {
     margin-bottom: 0.5rem;
     opacity: 0.8;
+  }
+
+  .quote {
+    font: 1.2rem Georgia, serif;
+    margin: 0;
+    background: #eee;
+    padding: 1em;
+    border-radius: 1em;
+  }
+  .quote figcaption,
+  .quote blockquote {
+    margin: 1em;
+  }
+  .quote figcaption {
+    text-align: right;
   }
   
   @media (max-width: 700px) {
